@@ -51,6 +51,8 @@ export default function SettingsPage() {
         <PageHeader title="Settings" subtitle="System configuration and integration setup" />
 
         <div className="max-w-2xl space-y-6">
+
+          {/* System Health */}
           <div className="card p-6">
             <div className="flex items-center gap-2 mb-4">
               <Server size={16} className="text-slate-500" />
@@ -63,7 +65,11 @@ export default function SettingsPage() {
                 {health === "error" && <XCircle size={18} className="text-red-500" />}
                 <div>
                   <p className="text-sm font-semibold text-slate-700">
-                    {health === "checking" ? "Checking backend..." : health === "ok" ? "Backend Online" : "Backend Unreachable"}
+                    {health === "checking"
+                      ? "Checking system..."
+                      : health === "ok"
+                      ? "All Systems Operational"
+                      : "Unable to connect — check configuration"}
                   </p>
                   {healthTs && <p className="text-xs text-slate-400">Last checked at {healthTs}</p>}
                 </div>
@@ -74,6 +80,7 @@ export default function SettingsPage() {
             </div>
           </div>
 
+          {/* Twilio Webhook URLs */}
           <div className="card p-6">
             <div className="flex items-center gap-2 mb-1">
               <Wifi size={16} className="text-slate-500" />
@@ -88,7 +95,9 @@ export default function SettingsPage() {
                     <code className="text-xs text-slate-700 flex-1 font-mono truncate">{w.url}</code>
                     <button onClick={() => copy(w.url, w.key)}
                       className="text-slate-400 hover:text-blue-600 transition-colors flex-shrink-0">
-                      {copied === w.key ? <CheckCheck size={14} className="text-emerald-500" /> : <Copy size={14} />}
+                      {copied === w.key
+                        ? <CheckCheck size={14} className="text-emerald-500" />
+                        : <Copy size={14} />}
                     </button>
                   </div>
                   <p className="text-xs text-slate-400 mt-1">{w.desc}</p>
@@ -97,6 +106,7 @@ export default function SettingsPage() {
             </div>
           </div>
 
+          {/* Quick Links */}
           <div className="card p-6">
             <h2 className="font-display font-600 text-slate-800 mb-4">Quick Links</h2>
             <div className="grid grid-cols-2 gap-3">
@@ -108,6 +118,7 @@ export default function SettingsPage() {
               ))}
             </div>
           </div>
+
         </div>
       </main>
     </div>
