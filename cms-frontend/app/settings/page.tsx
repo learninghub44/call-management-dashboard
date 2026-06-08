@@ -4,7 +4,7 @@ import Sidebar from "@/components/Sidebar";
 import PageHeader from "@/components/PageHeader";
 import { api } from "@/lib/api";
 import {
-  Copy, CheckCheck, Wifi, Server, Database, Key,
+  Copy, CheckCheck, Wifi, Server,
   ExternalLink, CheckCircle2, XCircle, RefreshCw
 } from "lucide-react";
 
@@ -38,21 +38,10 @@ export default function SettingsPage() {
     { label: "Outbound TwiML URL", key: "outbound", url: `${API_URL}/webhooks/outbound-twiml`, desc: "Used internally for outbound call TwiML" },
   ];
 
-  const envVars = [
-    { key: "TWILIO_ACCOUNT_SID", desc: "Your Twilio Account SID (starts with AC)" },
-    { key: "TWILIO_AUTH_TOKEN", desc: "Your Twilio Auth Token" },
-    { key: "TWILIO_PHONE_NUMBER", desc: "Your Twilio phone number in E.164 format" },
-    { key: "DATABASE_URL", desc: "Supabase PostgreSQL connection string" },
-    { key: "API_KEY", desc: "Secret key for X-API-Key header authentication" },
-    { key: "BASE_URL", desc: "Your Render deployment URL" },
-    { key: "NODE_ENV", desc: "Set to production" },
-  ];
-
   const links = [
-    { label: "GitHub Repo", url: "https://github.com/learninghub44/call-management-system", icon: ExternalLink },
+    { label: "Twilio Console", url: "https://console.twilio.com", icon: ExternalLink },
     { label: "Render Dashboard", url: "https://dashboard.render.com", icon: ExternalLink },
     { label: "Supabase Dashboard", url: "https://supabase.com/dashboard", icon: ExternalLink },
-    { label: "Twilio Console", url: "https://console.twilio.com", icon: ExternalLink },
   ];
 
   return (
@@ -62,7 +51,6 @@ export default function SettingsPage() {
         <PageHeader title="Settings" subtitle="System configuration and integration setup" />
 
         <div className="max-w-2xl space-y-6">
-          {/* System Health */}
           <div className="card p-6">
             <div className="flex items-center gap-2 mb-4">
               <Server size={16} className="text-slate-500" />
@@ -78,7 +66,6 @@ export default function SettingsPage() {
                     {health === "checking" ? "Checking backend..." : health === "ok" ? "Backend Online" : "Backend Unreachable"}
                   </p>
                   {healthTs && <p className="text-xs text-slate-400">Last checked at {healthTs}</p>}
-                  <p className="text-xs text-slate-400 font-mono">{API_URL}</p>
                 </div>
               </div>
               <button onClick={checkHealth} className="btn-secondary text-xs">
@@ -87,7 +74,6 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          {/* Twilio Webhook URLs */}
           <div className="card p-6">
             <div className="flex items-center gap-2 mb-1">
               <Wifi size={16} className="text-slate-500" />
@@ -97,9 +83,7 @@ export default function SettingsPage() {
             <div className="space-y-4">
               {webhooks.map(w => (
                 <div key={w.key}>
-                  <div className="flex items-center justify-between mb-1">
-                    <label className="text-xs font-semibold text-slate-600">{w.label}</label>
-                  </div>
+                  <label className="text-xs font-semibold text-slate-600 block mb-1">{w.label}</label>
                   <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5">
                     <code className="text-xs text-slate-700 flex-1 font-mono truncate">{w.url}</code>
                     <button onClick={() => copy(w.url, w.key)}
@@ -113,36 +97,6 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          {/* API Key */}
-          <div className="card p-6">
-            <div className="flex items-center gap-2 mb-1">
-              <Key size={16} className="text-slate-500" />
-              <h2 className="font-display font-600 text-slate-800">API Authentication</h2>
-            </div>
-            <p className="text-xs text-slate-400 mb-4">All REST API calls require this header</p>
-            <div className="bg-slate-900 rounded-xl px-4 py-3">
-              <code className="text-xs text-emerald-400 font-mono">X-API-Key: <span className="text-blue-300">{process.env.NEXT_PUBLIC_API_KEY || "callsystem2024secret"}</span></code>
-            </div>
-          </div>
-
-          {/* Required env vars */}
-          <div className="card p-6">
-            <div className="flex items-center gap-2 mb-1">
-              <Database size={16} className="text-slate-500" />
-              <h2 className="font-display font-600 text-slate-800">Required Environment Variables</h2>
-            </div>
-            <p className="text-xs text-slate-400 mb-4">Set these in your Render dashboard → Environment</p>
-            <div className="space-y-2">
-              {envVars.map(v => (
-                <div key={v.key} className="flex items-start gap-3 py-2 border-b border-slate-50">
-                  <code className="text-xs font-mono font-semibold text-blue-700 bg-blue-50 px-2 py-0.5 rounded w-52 flex-shrink-0">{v.key}</code>
-                  <span className="text-xs text-slate-500">{v.desc}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Quick links */}
           <div className="card p-6">
             <h2 className="font-display font-600 text-slate-800 mb-4">Quick Links</h2>
             <div className="grid grid-cols-2 gap-3">
